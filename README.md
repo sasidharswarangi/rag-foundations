@@ -32,6 +32,16 @@ to ingest your own documents and ask questions grounded in them.
 Move here once the concepts from `BasicsAndFundamentals/` feel familiar
 and you want to build the real thing by hand.
 
+## Branches
+
+- **`master`** — stable branch. Merged, working content only.
+- **`dev`** — integration branch. Feature branches are merged here first,
+  then periodically merged into `master`.
+- **Feature branches** (created off `dev`, merged back via PR, then
+  deleted): e.g. `basics` (added the `BasicsAndFundamentals` notebook),
+  `RAGFromScratch` (added the framework-free RAG pipeline). New work
+  follows the same pattern — branch off `dev`, PR back into `dev`.
+
 ## Suggested order
 
 1. Read/run through `BasicsAndFundamentals/rag_foundations.ipynb`.
