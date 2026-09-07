@@ -1,0 +1,17 @@
+# Embeddings (runs locally, no API key needed, no cost)
+sentence-transformers==3.0.1
+
+# Vector store — used here purely as a storage/index format.
+# We do NOT use faiss's .search(); we write cosine similarity by hand instead.
+faiss-cpu==1.8.0
+
+# PDF text extraction
+pypdf==4.3.1
+
+numpy==1.26.4
+
+# LLM call for the final generation step. Pick one (or both):
+anthropic==0.34.2
+openai==1.43.0
+
+python-dotenv==1.0.1

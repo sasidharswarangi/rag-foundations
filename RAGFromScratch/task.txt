@@ -1,0 +1,15 @@
+Here's the full pipeline, 7 small files (~420 lines total), no LangChain/LlamaIndex anywhere:
+
+How it maps to your spec:
+
+loaders.py — reads PDFs (pypdf) and markdown/txt from docs/
+chunking.py — hand-rolled sliding-window chunker with overlap
+embeddings.py — sentence-transformers (local, free, no API key) — swap this for OpenAI/Voyage embeddings and nothing else changes, since the contract is just "strings in, numpy array out"
+ingest.py — builds a real FAISS index (saved to disk, so you have the actual artifact) and dumps raw vectors.npy + metadata.json
+retrieval.py — the manual part: cosine_similarity() computed by hand (dot product / norms), then argsort for top-k. This is the whole thing vectorstore.similarity_search() hides from you. I never call index.search() anywhere.
+generate.py — builds a context-grounded prompt, calls Claude (default) or GPT-4o-mini
+cli.py — python cli.py ingest --docs ./docs then python cli.py ask "..."
+
+I unit-tested the chunker (verified overlap boundaries line up) and the cosine similarity function (verified magnitude-invariance and correct top-k ordering) with synthetic data — logic is correct. I couldn't pip install here (no network in this environment), so you'll want to run pip install -r requirements.txt on your machine before the first real run.
+
+Drop 5-10 of your own PDFs/markdown into docs/, set ANTHROPIC_API_KEY, and you're at your milestone. The README has a "read in this order" section and notes on where FAISS's optimized search would actually start to matter (past ~100k chunks — brute-force cosine is what FAISS does internally at your scale anyway).
